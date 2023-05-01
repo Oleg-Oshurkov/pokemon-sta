@@ -1,0 +1,12 @@
+.listItem {
+    border: 1px solid transparent;
+    background-color: lightgrey;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.listItem:hover {
+    color: #38a169;
+    border: 1px solid #38a169;
+}
