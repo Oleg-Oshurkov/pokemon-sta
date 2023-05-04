@@ -73,8 +73,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
-mark {
-  color: #e03c31;
-  background: transparent;
-}
