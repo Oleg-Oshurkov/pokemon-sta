@@ -5,38 +5,32 @@ import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
 type SearchFieldProps = {
-    setSearchValue: Dispatch<SetStateAction<string>>
-    debounceDelay: number
+    onChange: Dispatch<SetStateAction<string>>
+    debounceDelay: number,
+    setFocused: Dispatch<SetStateAction<boolean>>
 }
 
 export const SearchField = ({
-    setSearchValue,
-    debounceDelay
+    onChange,
+    debounceDelay,
+    setFocused
 }: SearchFieldProps) => {
-    const [isShowIcon, setIsShowIcon] = useState(true)
     const [value, setValue] = useState('')
     const subjectRef = useRef<Subject<string>>()
 
-    const setIconVisibility = () => {
-        if (!value) {
-            setIsShowIcon(true)
-        }
-    }
-
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setIconVisibility()
         setValue(event.target.value)
 
         return subjectRef.current?.next(event.target.value)
     }
 
     useEffect(() => {
-        if (debounceDelay && setSearchValue) {
+        if (debounceDelay && onChange) {
             const subject = new Subject<string>()
 
             subjectRef.current = subject
             subject.pipe(debounceTime(debounceDelay)).subscribe({
-                next: setSearchValue
+                next: onChange
             })
         }
     }, [])
@@ -46,18 +40,19 @@ export const SearchField = ({
             position="relative"
         >
             <Input
-                onFocus={() => setIsShowIcon(false)}
-                onBlur={setIconVisibility}
                 onChange={handleInputChange}
                 paddingLeft="30px"
-                placeholder="Type the Pokemon's name"
+                placeholder='The search starts with 3 entered characters, e.g. "bul"'
                 data-testid="search"
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
             />
-            {isShowIcon && !value && <Search2Icon
+            <Search2Icon
                 position="absolute"
                 top="12px"
                 left="10px"
-            />}
+                color={value?.length < 3 ? 'red.400' : 'green.400'}
+            />
         </Box>
     )
 }
