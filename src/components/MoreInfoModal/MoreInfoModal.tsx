@@ -25,7 +25,7 @@ import { DetailsTable } from "../DetailsTable"
 import { Loader } from "../Loader"
 import { pokemon as mockedPokemon } from '../../helpers/mocks'
 import { API_LANGUAGE_ID_EN } from "../../helpers/constants"
-import { toCapitalized } from "../../helpers"
+import { getRandomKey, replaceNewLineChars, toCapitalized } from "../../helpers"
 
 type MoreInfoModalProps = {
     isOpen: boolean
@@ -113,8 +113,9 @@ export const MoreInfoModal: React.FC<MoreInfoModalProps> = ({ isOpen, pokemonNam
                                         </Heading>
                                         <Box pl="8px">
                                             {pokemon?.pokemon_v2_pokemonspeciesflavortexts?.filter(({ language_id }) => language_id === API_LANGUAGE_ID_EN)?.map(({ flavor_text }) => (
-                                                <Text key={`${Math.random()}`.replace('.', '')}>{flavor_text.replaceAll(/[\n\f]/gim, ' ')}</Text>
+                                                <Text key={getRandomKey()}>{replaceNewLineChars(flavor_text)}</Text>
                                             ))}
+                                            {!pokemon?.pokemon_v2_pokemonspeciesflavortexts?.length ? <Text textAlign="center">No data</Text> : null}
                                         </Box>
                                     </GridItem>
                                 </Grid>
