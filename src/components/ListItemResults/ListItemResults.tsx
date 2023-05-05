@@ -1,5 +1,6 @@
 import { Badge, Box, Image, ListItem, Text } from "@chakra-ui/react"
 import { CONFIG } from "../../config/env"
+import { toCapitalized } from "../../helpers"
 import styles from './ListItemResults.module.css'
 
 type ListItemResultsProps = {
@@ -19,7 +20,7 @@ export const ListItemResults = ({ id, is_legendary, is_mythical, name, handleLis
         data-testid="listitem"
     >
         <Text>
-            <span>{name}</span>
+            <span>{toCapitalized(name)}</span>
             {is_legendary ? <Badge fontSize="0.5em" marginLeft="8px" colorScheme="yellow">Legendary</Badge> : null}
             {is_mythical ? <Badge fontSize="0.5em" marginLeft="8px" colorScheme="cyan">Mythical</Badge> : null}
         </Text>

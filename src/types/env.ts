@@ -1,16 +1,10 @@
 export type ReactEnvironment = {
     REACT_SERVER_URL: string
     IMAGE_SRC_URL: string
+    IS_MOCK_API: boolean
 }
 
 export enum Filtering {
     FE = 'FE',
     BE = 'BE'
-}
-
-export enum QueryName {
-    'GET_POKEMONS_ALL_GENERATIONS'= 'GET_POKEMONS_ALL_GENERATIONS',
-    'GET_POKEMONS_III_GENERATION'= 'GET_POKEMONS_III_GENERATION',
-    'GET_POKEMONS_BY_REGEX'= 'GET_POKEMONS_BY_REGEX',
-    'GET_POKEMON_INFO_BY_NAME'= 'GET_POKEMON_INFO_BY_NAME'
 }

@@ -12,6 +12,7 @@ To install the app, please follow these steps:
 - Run `pnpm dev`.
 - Navigate to `http://localhost:5173/`.
 - To run tests, execute `pnpm test`.
+- Note: If API doesn't respond, please open the `/src/config/env.ts` file and set `IS_MOCK_API` to true in order to see the mock data.
 
 ## Features
 The app provides the following features:
@@ -28,6 +29,7 @@ The app provides the following features:
 ## Design and Development
 For this app, I used the `GraphQL API` and `Apollo` client. I chose these technologies because of their caching feature, which allows for a minimum number of requests to the server and faster app performance compared to using pure `REST-like API` requests. The disadvantage of such approach with using `GraphQL` may be that, let's imagine, we already use `REST` on the backend, so developers may not be comfortable to build a `GraphQL` layer between the existing API and the frontend and redirect existing endpoints and responses with data and types to this layer. But the work on the construction of this layer will pay off with the advantages of `GraphQL` in the future.
 For the UI library, I used `Chakra UI`, which is flexible and provides everything we need to facilitate the development process. The downside of this UI library is that it is based on `Tailwind` and uses internal library abbreviations or terms to define any `CSS` properties and values, which can be confusing. But using a cheat sheet listing these predefined library names and the supported values they receive can be helpful during development.
+For the components styling I used CSS Module stylesheets as it is convenient way to describe style rules for components and has no intersections with other styles.
 I used `Vite` as the app builder because it is a fast and modern way to develop `React` applications. The disadvantage of this application builder may be that it does not provide standard support for unit tests compared to `CRA`, so you have to install the desired test library manually and write a couple of lines in the configuration files.
 For testing, I used `Playwright` and `React Testing Library`. The app took approximately 8 hours to complete.
 
