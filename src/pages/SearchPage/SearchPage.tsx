@@ -9,7 +9,7 @@ import { GET_POKEMONS_ALL_GENERATIONS, GET_POKEMONS_BY_REGEX } from '../../apoll
 import { MoreInfoModal } from '../../components/MoreInfoModal'
 import { CONFIG } from '../../config/env'
 import { pokemons } from '../../helpers/mocks'
-import { DEBOUNCE_DELAY } from '../../helpers/constants'
+import { DEBOUNCE_DELAY, SEARCH_VALUE_MIN_LENGTH } from '../../helpers/constants'
 
 export const SearchPage = () => {
   const [focused, setFocused] = useState(false);
@@ -34,11 +34,11 @@ export const SearchPage = () => {
   }
 
   useEffect(() => {
-    if (searchValue.length >= 3) {
+    if (searchValue.length >= SEARCH_VALUE_MIN_LENGTH) {
         filtering === Filtering.FE ? searchPokemons() : searchPokemons({ variables: { name: searchValue } })
     }
 
-    if (!isTyped && searchValue.length >= 3) {
+    if (!isTyped && searchValue.length >= SEARCH_VALUE_MIN_LENGTH) {
       setIsTyped(true)
     }
   }, [searchValue, filtering])
@@ -59,14 +59,14 @@ export const SearchPage = () => {
         </Container>
         <Container marginTop="12px">
           <SearchField onChange={setSearchValue} debounceDelay={DEBOUNCE_DELAY} setFocused={setFocused} isTyped={isTyped} />
-          {searchValue.length < 3 && focused && isTyped ? <Text color="red.500" fontSize="11px" pb="5px">The search starts with 3 entered characters, e.g. "bul"</Text> : null}
+          {searchValue.length < SEARCH_VALUE_MIN_LENGTH && focused && isTyped ? <Text color="red.500" fontSize="11px" pb="5px">The search starts with {SEARCH_VALUE_MIN_LENGTH} entered characters, e.g. "bul"</Text> : null}
           <Box>
             {isLoading
               ? <Box mt="8px" display="flex" alignItems="center" justifyContent="center" width="100%"><Loader /></Box>
               : (
                 <Fragment>
                   {searchError ? <Text color="red.600">An error occurred: {searchError?.message}</Text> : null}
-                  {(searchData || mockData.length) && !(searchValue.length < 3) ? <SearchResults data={[ searchData?.pokemons, ...mockData ]} searchValue={searchValue} handleClick={handleListItemClick} /> : null}
+                  {(searchData || mockData.length) && !(searchValue.length < SEARCH_VALUE_MIN_LENGTH) ? <SearchResults data={[ searchData?.pokemons, ...mockData ]} searchValue={searchValue} handleClick={handleListItemClick} /> : null}
                 </Fragment>
               )
             }
