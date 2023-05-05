@@ -1,4 +1,21 @@
-import { Badge, Box, Button, Grid, GridItem, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react"
+import React from 'react'
+import {
+    Badge,
+    Box,
+    Button,
+    Grid,
+    GridItem,
+    Heading,
+    Image,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text
+} from "@chakra-ui/react"
 import { Fragment, useEffect, useState } from "react"
 import { useSearchLazyQuery } from "../../apollo/hooks"
 import { GET_POKEMON_INFO_BY_NAME } from "../../apollo/queries"
@@ -8,7 +25,7 @@ import { DetailsTable } from "../DetailsTable"
 import { Loader } from "../Loader"
 import { pokemon as mockedPokemon } from '../../helpers/mocks'
 import { API_LANGUAGE_ID_EN } from "../../helpers/constants"
-import { toCapitalized } from "../../helpers"
+import { getRandomKey, replaceNewLineChars, toCapitalized } from "../../helpers"
 
 type MoreInfoModalProps = {
     isOpen: boolean
@@ -16,7 +33,7 @@ type MoreInfoModalProps = {
     onClose: () => void
 }
 
-export const MoreInfoModal = ({ isOpen, pokemonName, onClose }: MoreInfoModalProps) => {
+export const MoreInfoModal: React.FC<MoreInfoModalProps> = ({ isOpen, pokemonName, onClose }) => {
     const [pokemon, setPokemon] = useState<PokemonAllDetails | null>(null)
     const [getPokemonInfo, { loading: isLoading, data: infoData, error: infoError }] = useSearchLazyQuery({ query: GET_POKEMON_INFO_BY_NAME })
     const mockData = mockedPokemon.data.pokemon[0]
@@ -96,8 +113,9 @@ export const MoreInfoModal = ({ isOpen, pokemonName, onClose }: MoreInfoModalPro
                                         </Heading>
                                         <Box pl="8px">
                                             {pokemon?.pokemon_v2_pokemonspeciesflavortexts?.filter(({ language_id }) => language_id === API_LANGUAGE_ID_EN)?.map(({ flavor_text }) => (
-                                                <Text key={`${Math.random()}`.replace('.', '')}>{flavor_text.replaceAll(/[\n\f]/gim, ' ')}</Text>
+                                                <Text key={getRandomKey()}>{replaceNewLineChars(flavor_text)}</Text>
                                             ))}
+                                            {!pokemon?.pokemon_v2_pokemonspeciesflavortexts?.length ? <Text textAlign="center">No data</Text> : null}
                                         </Box>
                                     </GridItem>
                                 </Grid>

@@ -1,3 +1,4 @@
+import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { WelcomePage } from './pages/WelcomePge'
 import { SearchPage } from './pages/SearchPage'
@@ -21,4 +22,4 @@ function App() {
   )
 }
 
-export default App
+export default App as React.FC
