@@ -1,3 +1,4 @@
+import React from 'react'
 import { ChangeEvent, Fragment, useEffect, useState } from 'react'
 import { Box, Container, Radio, RadioGroup, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { SearchField } from '../../components/SearchField'
@@ -11,7 +12,7 @@ import { CONFIG } from '../../config/env'
 import { pokemons } from '../../helpers/mocks'
 import { DEBOUNCE_DELAY, SEARCH_VALUE_MIN_LENGTH } from '../../helpers/constants'
 
-export const SearchPage = () => {
+export const SearchPage: React.FC = () => {
   const [focused, setFocused] = useState(false);
   const [filtering, setFiltering] = useState(Filtering.FE)
   const [searchValue, setSearchValue] = useState('')
@@ -59,7 +60,7 @@ export const SearchPage = () => {
         </Container>
         <Container marginTop="12px">
           <SearchField onChange={setSearchValue} debounceDelay={DEBOUNCE_DELAY} setFocused={setFocused} isTyped={isTyped} />
-          {searchValue.length < SEARCH_VALUE_MIN_LENGTH && focused && isTyped ? <Text color="red.500" fontSize="11px" pb="5px">The search starts with {SEARCH_VALUE_MIN_LENGTH} entered characters, e.g. "bul"</Text> : null}
+          {searchValue.length < SEARCH_VALUE_MIN_LENGTH && focused && isTyped ? <Text color="red.500" fontSize="11px" pb="5px">The search starts with {SEARCH_VALUE_MIN_LENGTH} entered characters, e.g. `bul`</Text> : null}
           <Box>
             {isLoading
               ? <Box mt="8px" display="flex" alignItems="center" justifyContent="center" width="100%"><Loader /></Box>

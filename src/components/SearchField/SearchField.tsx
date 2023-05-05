@@ -1,3 +1,4 @@
+import React from 'react'
 import { Box, Input } from "@chakra-ui/react"
 import { Search2Icon } from '@chakra-ui/icons'
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
@@ -12,12 +13,12 @@ type SearchFieldProps = {
     setFocused: Dispatch<SetStateAction<boolean>>
 }
 
-export const SearchField = ({
+export const SearchField: React.FC<SearchFieldProps> = ({
     debounceDelay,
     isTyped,
     onChange,
     setFocused
-}: SearchFieldProps) => {
+}) => {
     const [value, setValue] = useState('')
     const subjectRef = useRef<Subject<string>>()
 

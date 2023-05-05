@@ -42,6 +42,7 @@ There are several potential improvements I could make to the app in the future:
 - I could highlight the text in each list of items found using a library like `Mark.js`.
 - Text input validation could be helpful.
 - The comparison page can be created for comparison `Pokemons`.
+- Routing to particular `Pokemon` by ID can be added to be able to access any pokemon by the link.
 - I could add lazy loading or pagination to handle larger lists of `Pokemon` and improve app performance.
 - The virtualization of long lists could be helpful here as well in order to increase the app performance while displaying the list with a lot of response data. For example I can use `react-window` library for this purpose.
 - The button to display the list of all existing `Pokemons` might be useful as well. It will require the performance improvements techniques mentioned above to display the list with all the results.

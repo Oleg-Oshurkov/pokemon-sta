@@ -1,6 +1,7 @@
+import React from 'react'
 import { Box, Container, Heading, Text } from "@chakra-ui/react";
 
-export const WelcomePage = () => (
+export const WelcomePage: React.FC = () => (
     <Container>
       <Heading color="green.900" fontSize="24px">
         <span>Pokemon Search Them All</span>

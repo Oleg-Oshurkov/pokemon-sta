@@ -1,3 +1,4 @@
+import React from 'react'
 import { Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import { Fragment, ReactElement } from "react"
 
@@ -6,7 +7,7 @@ type DetailsTableProps = {
     data: { parameter: string, value: any }[]
 }
 
-export const DetailsTable = ({ title, data }: DetailsTableProps): ReactElement | null => {
+export const DetailsTable: React.FC<DetailsTableProps> = ({ title, data }): ReactElement | null => {
     const [firstDataSlice, secondDataSlice, thirdDataSlice, fourthDataSlice, fifthDataSlice] = data
 
     return (

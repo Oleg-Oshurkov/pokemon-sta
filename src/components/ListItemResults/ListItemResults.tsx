@@ -1,3 +1,4 @@
+import React from 'react'
 import { Badge, Box, Image, ListItem, Text } from "@chakra-ui/react"
 import { CONFIG } from "../../config/env"
 import { toCapitalized } from "../../helpers"
@@ -11,13 +12,14 @@ type ListItemResultsProps = {
     handleListItemClick: (name: string) => void
 }
 
-export const ListItemResults = ({ id, is_legendary, is_mythical, name, handleListItemClick }: ListItemResultsProps) => (
+export const ListItemResults: React.FC<ListItemResultsProps> = ({ id, is_legendary, is_mythical, name, handleListItemClick }) => (
     <ListItem
         boxShadow="lg"
         className={styles.listItem}
         color={is_legendary ? 'yellow.500' : 'black.500'}
         onClick={() => handleListItemClick(name)}
         data-testid="listitem"
+        width="45%"
     >
         <Text>
             <span>{toCapitalized(name)}</span>

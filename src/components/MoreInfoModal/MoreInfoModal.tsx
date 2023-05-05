@@ -1,4 +1,21 @@
-import { Badge, Box, Button, Grid, GridItem, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react"
+import React from 'react'
+import {
+    Badge,
+    Box,
+    Button,
+    Grid,
+    GridItem,
+    Heading,
+    Image,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text
+} from "@chakra-ui/react"
 import { Fragment, useEffect, useState } from "react"
 import { useSearchLazyQuery } from "../../apollo/hooks"
 import { GET_POKEMON_INFO_BY_NAME } from "../../apollo/queries"
@@ -16,7 +33,7 @@ type MoreInfoModalProps = {
     onClose: () => void
 }
 
-export const MoreInfoModal = ({ isOpen, pokemonName, onClose }: MoreInfoModalProps) => {
+export const MoreInfoModal: React.FC<MoreInfoModalProps> = ({ isOpen, pokemonName, onClose }) => {
     const [pokemon, setPokemon] = useState<PokemonAllDetails | null>(null)
     const [getPokemonInfo, { loading: isLoading, data: infoData, error: infoError }] = useSearchLazyQuery({ query: GET_POKEMON_INFO_BY_NAME })
     const mockData = mockedPokemon.data.pokemon[0]

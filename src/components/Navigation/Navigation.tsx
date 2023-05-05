@@ -1,18 +1,19 @@
-import { Container, Tab, TabIndicator, TabList, Tabs } from "@chakra-ui/react";
+import React from 'react'
+import { Box, Container, Tab, TabIndicator, TabList, Tabs } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-export const Navigation = () => (
-    <Container width="100vw" p="0px">
-      <nav>
+export const Navigation: React.FC = () => (
+    <Container width="100%" p="0px">
+      <nav style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Tabs size="md" variant="unstyled" position="relative" p="20px" pt="0px" >
           <TabList>
           <Link to="/">
-            <Tab _hover={{ borderColor: "transparent" }} _selected={{ color: 'green.400' }}>
+            <Tab as={Box} _hover={{ borderColor: "transparent" }} _selected={{ color: 'green.400' }}>
               Welcome
             </Tab>
           </Link>
           <Link to="/search">
-            <Tab _hover={{ borderColor: "transparent" }} _selected={{ color: 'green.400' }}>
+            <Tab as={Box} _hover={{ borderColor: "transparent" }} _selected={{ color: 'green.400' }}>
               Search
             </Tab>
           </Link>
