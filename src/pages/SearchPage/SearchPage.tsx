@@ -7,6 +7,9 @@ import { SearchResults } from '../../components/SearchResults'
 import { Filtering } from '../../types'
 import { GET_POKEMONS_ALL_GENERATIONS, GET_POKEMONS_BY_REGEX } from '../../apollo/queries'
 import { MoreInfoModal } from '../../components/MoreInfoModal'
+import { CONFIG } from '../../config/env'
+import { pokemons } from '../../helpers/mocks'
+import { DEBOUNCE_DELAY } from '../../helpers/constants'
 
 export const SearchPage = () => {
   const [focused, setFocused] = useState(false);
@@ -14,6 +17,8 @@ export const SearchPage = () => {
   const [searchValue, setSearchValue] = useState('')
   const [selectedPokemon, setSelectedPokemon] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isTyped, setIsTyped] = useState(false)
+  const mockData = CONFIG.IS_MOCK_API ? pokemons.data.pokemon : []
 
   const [searchPokemons, { loading: isLoading, data: searchData, error: searchError }] = useSearchLazyQuery({
     query: filtering === Filtering.FE ? GET_POKEMONS_ALL_GENERATIONS : GET_POKEMONS_BY_REGEX
@@ -32,6 +37,10 @@ export const SearchPage = () => {
     if (searchValue.length >= 3) {
         filtering === Filtering.FE ? searchPokemons() : searchPokemons({ variables: { name: searchValue } })
     }
+
+    if (!isTyped && searchValue.length >= 3) {
+      setIsTyped(true)
+    }
   }, [searchValue, filtering])
 
   return (
@@ -49,15 +58,15 @@ export const SearchPage = () => {
           </RadioGroup>
         </Container>
         <Container marginTop="12px">
-          <SearchField onChange={setSearchValue} debounceDelay={1000} setFocused={setFocused} />
-          {searchValue.length < 3 && focused ? <Text color="red.500" fontSize="11px" pb="5px">The search starts with 3 entered characters, e.g. "bul"</Text> : null}
+          <SearchField onChange={setSearchValue} debounceDelay={DEBOUNCE_DELAY} setFocused={setFocused} isTyped={isTyped} />
+          {searchValue.length < 3 && focused && isTyped ? <Text color="red.500" fontSize="11px" pb="5px">The search starts with 3 entered characters, e.g. "bul"</Text> : null}
           <Box>
             {isLoading
               ? <Box mt="8px" display="flex" alignItems="center" justifyContent="center" width="100%"><Loader /></Box>
               : (
                 <Fragment>
                   {searchError ? <Text color="red.600">An error occurred: {searchError?.message}</Text> : null}
-                  {searchData && !(searchValue.length < 3) ? <SearchResults data={searchData?.pokemons} searchValue={searchValue} handleClick={handleListItemClick} /> : null}
+                  {(searchData || mockData.length) && !(searchValue.length < 3) ? <SearchResults data={[ searchData?.pokemons, ...mockData ]} searchValue={searchValue} handleClick={handleListItemClick} /> : null}
                 </Fragment>
               )
             }

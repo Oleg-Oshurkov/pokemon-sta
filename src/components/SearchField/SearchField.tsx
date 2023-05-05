@@ -5,14 +5,16 @@ import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
 type SearchFieldProps = {
-    onChange: Dispatch<SetStateAction<string>>
     debounceDelay: number,
+    isTyped: boolean
+    onChange: Dispatch<SetStateAction<string>>
     setFocused: Dispatch<SetStateAction<boolean>>
 }
 
 export const SearchField = ({
-    onChange,
     debounceDelay,
+    isTyped,
+    onChange,
     setFocused
 }: SearchFieldProps) => {
     const [value, setValue] = useState('')
@@ -51,7 +53,7 @@ export const SearchField = ({
                 position="absolute"
                 top="12px"
                 left="10px"
-                color={value?.length < 3 ? 'red.400' : 'green.400'}
+                color={value?.length < 3 && isTyped ? 'red.400' : 'green.400'}
             />
         </Box>
     )

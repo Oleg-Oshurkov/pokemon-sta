@@ -1,4 +1,4 @@
-import { Box,  Text, UnorderedList } from "@chakra-ui/react"
+import { Box, Text, UnorderedList } from "@chakra-ui/react"
 import { Fragment } from "react"
 import { PokemonNameDetails } from "../../types"
 import { ListItemResults } from "../ListItemResults"
@@ -10,7 +10,7 @@ type SearchResultsProps = {
 }
 
 export const SearchResults = ({ data, searchValue, handleClick }: SearchResultsProps) => {
-    const filteredPokemons = data.filter(({ name }) => name.includes(searchValue)) || []
+    const filteredPokemons = data.filter((data) => data !== undefined).flat().filter(({ name }) => name.includes(searchValue)) || []
 
     return (
         <Fragment>

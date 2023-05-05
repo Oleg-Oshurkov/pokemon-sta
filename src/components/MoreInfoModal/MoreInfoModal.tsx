@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Grid, GridItem, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { Badge, Box, Button, Grid, GridItem, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react"
 import { Fragment, useEffect, useState } from "react"
 import { useSearchLazyQuery } from "../../apollo/hooks"
 import { GET_POKEMON_INFO_BY_NAME } from "../../apollo/queries"
@@ -6,16 +6,20 @@ import { CONFIG } from "../../config/env"
 import { PokemonAllDetails } from "../../types"
 import { DetailsTable } from "../DetailsTable"
 import { Loader } from "../Loader"
+import { pokemon as mockedPokemon } from '../../helpers/mocks'
+import { API_LANGUAGE_ID_EN } from "../../helpers/constants"
+import { toCapitalized } from "../../helpers"
 
 type MoreInfoModalProps = {
     isOpen: boolean
-    onClose: () => void
     pokemonName: string
+    onClose: () => void
 }
 
-export const MoreInfoModal = ({ isOpen, onClose, pokemonName }: MoreInfoModalProps) => {
+export const MoreInfoModal = ({ isOpen, pokemonName, onClose }: MoreInfoModalProps) => {
     const [pokemon, setPokemon] = useState<PokemonAllDetails | null>(null)
     const [getPokemonInfo, { loading: isLoading, data: infoData, error: infoError }] = useSearchLazyQuery({ query: GET_POKEMON_INFO_BY_NAME })
+    const mockData = mockedPokemon.data.pokemon[0]
 
     useEffect(() => {
         if (pokemonName) {
@@ -31,11 +35,17 @@ export const MoreInfoModal = ({ isOpen, onClose, pokemonName }: MoreInfoModalPro
         }
     }, [infoData])
 
+    useEffect(() => {
+        if (CONFIG.IS_MOCK_API) {
+            setPokemon(mockData)
+        }
+    }, [CONFIG.IS_MOCK_API])
+
     return (
         <Modal onClose={onClose} size="lg" isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent>
-            <ModalHeader>{pokemonName}</ModalHeader>
+            <ModalHeader>{toCapitalized(pokemonName)}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
                 {isLoading
@@ -43,7 +53,7 @@ export const MoreInfoModal = ({ isOpen, onClose, pokemonName }: MoreInfoModalPro
                     : (
                     <Fragment>
                         {infoError ? <Text color="red.600">An error occurred: {infoError?.message}</Text> : null}
-                        {infoData
+                        {pokemon
                         ? (
                             <Box>
                                 <Grid
@@ -63,17 +73,29 @@ export const MoreInfoModal = ({ isOpen, onClose, pokemonName }: MoreInfoModalPro
                                         </Box>
                                     </GridItem>
                                     <GridItem className="characteristics" colSpan={4} bg="green.50" p="5px">
-                                        <DetailsTable title="Characteristics" pokemon={pokemon} />
+                                        <DetailsTable title="Characteristics" data={[
+                                            {parameter: 'height',value:pokemon?.pokemon_v2_pokemons?.[0]?.height},
+                                            {parameter: 'weight',value:pokemon?.pokemon_v2_pokemons?.[0]?.weight},
+                                            {parameter: 'base experience',value:pokemon?.pokemon_v2_pokemons?.[0]?.base_experience},
+                                            {parameter: 'base happiness',value:pokemon?.base_happiness},
+                                            {parameter: 'capture rate',value:pokemon?.capture_rate}
+                                        ]} />
                                     </GridItem>
                                     <GridItem className="characteristics" colSpan={4} bg="green.50" p="5px">
-                                        <DetailsTable title="Additional" pokemon={pokemon} />
+                                        <DetailsTable title="Additional" data={[
+                                            {parameter: 'color',value:pokemon?.pokemon_v2_pokemoncolor?.name},
+                                            {parameter: 'awesome name',value:pokemon?.pokemon_v2_pokemonshape?.pokemon_v2_pokemonshapenames?.filter(({ language_id }) => language_id === API_LANGUAGE_ID_EN)?.[0]?.awesome_name},
+                                            {parameter: 'genus',value:pokemon?.pokemon_v2_pokemonspeciesnames?.filter(({ language_id }) => language_id === API_LANGUAGE_ID_EN)?.[0]?.genus},
+                                            {parameter: 'id',value:pokemon?.id},
+                                            {parameter: 'generation id',value:pokemon?.generation_id},
+                                        ]} />
                                     </GridItem>
                                     <GridItem colSpan={4} bg="green.50" p="5px">
                                         <Heading size="xs" textAlign="center" mt="8px" mb="8px">
                                             Legend
                                         </Heading>
                                         <Box pl="8px">
-                                            {pokemon?.pokemon_v2_pokemonspeciesflavortexts?.filter(({ language_id }) => language_id === 9)?.map(({ flavor_text }) => (
+                                            {pokemon?.pokemon_v2_pokemonspeciesflavortexts?.filter(({ language_id }) => language_id === API_LANGUAGE_ID_EN)?.map(({ flavor_text }) => (
                                                 <Text key={`${Math.random()}`.replace('.', '')}>{flavor_text.replaceAll(/[\n\f]/gim, ' ')}</Text>
                                             ))}
                                         </Box>
